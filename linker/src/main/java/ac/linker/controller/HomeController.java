@@ -153,7 +153,7 @@ public class HomeController {
     public String updateSkinCloth(@RequestBody UserVo userVo) {
         UserDto userDto = modelMapper.map(userVo, UserDto.class);
 
-        logger.info("updateSkinColor :: {} :: {}", userVo.getUserId(), userVo.getSkinCloth());
+        logger.info("updateSkinCloth :: {} :: {}", userVo.getUserId(), userVo.getSkinCloth());
 
         try {
             homeService.updateSkinCloth(userDto);
