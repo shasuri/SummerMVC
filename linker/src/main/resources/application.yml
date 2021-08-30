@@ -25,9 +25,9 @@ logging:
 
   logback:
     rollingpolicy:
-      file-name-pattern: "${LOG_FILE}.%d{yyyy-MM-dd}_%i.log"
+      file-name-pattern: "${LOG_FILE}.%d{yyyy-MM-dd}_%i.tester"
 
   file:
-    name: /var/log/summer_mvc/summer.log
+    name: /var/log/summer_mvc/summer.tester
     max-history: 20
     max-size: 1MB
