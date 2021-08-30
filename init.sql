@@ -7,8 +7,8 @@
 /*
     DB 생성 및 사용
 */
-CREATE DATABASE summer default CHARACTER SET UTF8;
-USE summer;
+CREATE DATABASE autumn default CHARACTER SET UTF8;
+USE autumn;
 
 CREATE TABLE user(
     global_user_no INT PRIMARY KEY AUTO_INCREMENT,
@@ -75,7 +75,7 @@ CREATE TABLE logs(
 
 USE mysql;
 CREATE user 'ghimmk'@'%' identified BY '5857';
-GRANT all privileges ON summer.* TO ghimmk@'%';
+GRANT all privileges ON autumn.* TO ghimmk@'%';
 flush privileges;
 
 
