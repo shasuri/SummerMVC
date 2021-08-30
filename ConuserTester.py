@@ -1,13 +1,17 @@
+import time
 import requests
 import threading
-
 
 url = "http://34.64.85.29:8081/"
 headers = {'content-type': 'application/json'}
 
 
 def requestApi(reqMethod, reqData):
-    response = requests.post(url+reqMethod, json=reqData, headers=headers)
+    try:
+        requests.post(url+reqMethod, json=reqData, headers=headers)
+    except:
+        time.sleep(2)
+        requests.post(url+reqMethod, json=reqData, headers=headers)
 
 
 class dataBuilder:
@@ -20,7 +24,7 @@ class dataBuilder:
             "authToken": "authToken" + dataId,
             "displayName": "displayName" + dataId,
             "userId": "userId" + dataId,
-            "newPlayer": (True if (sign is "register") else False),
+            "newPlayer": (True if (sign == "register") else False),
             "skinRole": "S"
         }
 
@@ -44,12 +48,12 @@ class dataBuilder:
         return {
             "GameId": "conuser_test",
             "UserId": "userId"+dataId,
-            "NickName": "displayName"+dataId
+            "Nickname": "displayName"+dataId
         }
 
     def getConAuthRoom(self):
         return {
-            "roomCode": ""
+            "joinCode": "code"
         }
 
     def getConRoomExist(self):
@@ -97,28 +101,58 @@ class dataBuilder:
 class ReqThread(threading.Thread):
     def __init__(self, thId):
         threading.Thread.__init__(self)
-        self.thId = thId
+        self.thId = str(thId)
 
     def run(self):
+        print(self.thId+"start")
         thDataBuilder = dataBuilder(self.thId)
+
         requestApi("login", thDataBuilder.getHomeLogin("register"))
+        # print(self.thId+"register")
+
         requestApi("login", thDataBuilder.getHomeLogin("login"))
+        # print(self.thId+"login")
+
         requestApi("user", thDataBuilder.getHomeUser())
+        # print(self.thId+"user")
+
         requestApi("skin", thDataBuilder.getHomeSkin())
+        # print(self.thId+"skin")
+
         requestApi("cloth", thDataBuilder.getHomeCloth())
+        # print(self.thId+"cloth")
+
         requestApi("auth_room", thDataBuilder.getConAuthRoom())
+        # print(self.thId+"authroom")
+
         requestApi("join", thDataBuilder.getConJoinLeave())
+        # print(self.thId+"join")
+
         requestApi("get_token", thDataBuilder.getAgora())
+        # print(self.thId+"gettoken")
+
         requestApi("delete_class_master", thDataBuilder.getAgora())
+        # print(self.thId+"deletecm")
+
         requestApi("board/list", thDataBuilder.getBoardList())
+        # print(self.thId+"boardlist")
+
         requestApi("board/insert", thDataBuilder.getBoardInsert())
-        requestApi("timer/list", thDataBuilder.getTimerAdd())
-        requestApi("timer/add", thDataBuilder.getTimerList())
+        # print(self.thId+"boardinsert")
+
+        requestApi("timer/add", thDataBuilder.getTimerAdd())
+        # print(self.thId+"timeradd")
+
+        requestApi("timer/list", thDataBuilder.getTimerList())
+        # print(self.thId+"timerlist")
+
         requestApi("leave", thDataBuilder.getConJoinLeave())
+        # print(self.thId+"leave")
+        print(self.thId+"end")
 
 
 if __name__ == "__main__":
-    for i in range(100):
+    for i in range(5000):
         reqThread = ReqThread(i)
         reqThread.start()
 
